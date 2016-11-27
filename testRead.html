@@ -1,0 +1,57 @@
+
+
+<!DOCTYPE HTML>
+<html>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<body>
+    <span id="info"></span><span id="info1"></span><span id="info2"></span><br>
+    <span id="tstamp"></span><br>
+
+    <button id="connectbutton" onclick="start()">Read info</button>
+
+    <script type="text/javascript">
+
+    function start(objButton) {
+
+        document.getElementById("info").innerHTML = "Waiting for data...";
+        document.getElementById("tstamp").innerHTML ="";
+        var deviceID = "55ff6f066678505540361367";
+        var accessToken = "bd2d2aab5945061a2d9af12248099c2fd9c9191b";
+        var varName1 = "Ldist";
+		var varName2 = "Rdist";
+		var varName3 = "angle";
+		
+
+        Ldist = "https://api.spark.io/v1/devices/" + deviceID + "/" + varName1 + "/?access_token=" + accessToken;
+		Rdist = "https://api.spark.io/v1/devices/" + deviceID + "/" + varName2 + "/?access_token=" + accessToken;
+		angle = "https://api.spark.io/v1/devices/" + deviceID + "/" + varName3 + "/?access_token=" + accessToken;
+		
+        $.getJSON(Ldist, function(json) {
+				document.getElementById("info").innerHTML = json.result+" ";
+				document.getElementById("info").style.fontSize = "28px";
+                 document.getElementById("tstamp").innerHTML = json.coreInfo.last_heard;
+                 });
+		$.getJSON(Rdist, function(json) {
+				document.getElementById("info1").innerHTML = json.result+" ";
+               document.getElementById("info1").style.fontSize = "28px";
+                 document.getElementById("tstamp").innerHTML = json.coreInfo.last_heard;
+                 });
+		$.getJSON(angle, function(json) {
+				document.getElementById("info2").innerHTML = json.result;
+               document.getElementById("info2").style.fontSize = "28px";
+                 document.getElementById("tstamp").innerHTML = json.coreInfo.last_heard;
+                 });
+				 
+		
+				 
+				
+				 
+				         
+                
+				 
+    }
+    </script>
+</body>
+</html>
+
+ 
