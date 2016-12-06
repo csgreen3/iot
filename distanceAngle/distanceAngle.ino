@@ -10,7 +10,7 @@ const int Lin = 10, Rin = 12, Lout = 11, Rout = 13, serv = 9; //setting sensor p
 // and the distance result in inches
 long Rduration, Lduration, Rinches, Linches;
 
-int threshold = 50; //Sensor threshold in inches
+int threshold = 20; //Sensor threshold in inches
 
 int angle = 10; //Initial angle
 
@@ -25,37 +25,17 @@ void setup() {
 void loop()
 {
 
-  //Most of the sensor code has been taken from David Mellis's PING sensor code
-  //I modified it for a 4 pin sensor as oppsed to the 3 pin sensor
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
-  pinMode(Rout, OUTPUT);
-  digitalWrite(Rout, LOW);
-  delayMicroseconds(2);
-  digitalWrite(Rout, HIGH);
-  delayMicroseconds(5);
-  digitalWrite(Rout, LOW);
 
-  Rduration = pulseIn(Rin, HIGH);
-
-  pinMode(Lout, OUTPUT);
-  digitalWrite(Lout, LOW);
-  delayMicroseconds(2);
-  digitalWrite(Lout, HIGH);
-  delayMicroseconds(5);
-  digitalWrite(Lout, LOW);
-
-  Lduration = pulseIn(Lin, HIGH);
-
-  // convert the time into a distance
-  Rinches = microsecondsToInches(Rduration);
-  Linches = microsecondsToInches(Lduration);
-
-  
+  read();
   follow();
-  Serial.write(Rinches);
-  Serial.write(Linches);
-  Serial.write(angle);
-  delay(50);
+  
+  Serial.print(Rinches);
+  Serial.print(",");
+  Serial.print(Linches);
+  Serial.print(",");
+  Serial.print(angle);
+  Serial.print("\n");
+  delay(10);
 }
 
 long microsecondsToInches(long microseconds)
@@ -101,31 +81,17 @@ void follow()
         switchs = true;
       }
       myservo.write(angle);
-      
-      pinMode(Rout, OUTPUT);
-      digitalWrite(Rout, LOW);
-      delayMicroseconds(2);
-      digitalWrite(Rout, HIGH);
-      delayMicroseconds(5);
-      digitalWrite(Rout, LOW);
 
-      Rduration = pulseIn(Rin, HIGH);
+      read();
 
-      pinMode(Lout, OUTPUT);
-      digitalWrite(Lout, LOW);
-      delayMicroseconds(2);
-      digitalWrite(Lout, HIGH);
-      delayMicroseconds(5);
-      digitalWrite(Lout, LOW);
-
-      Lduration = pulseIn(Lin, HIGH);
-
-      // convert the time into a distance
-      Rinches = microsecondsToInches(Rduration);
-      Linches = microsecondsToInches(Lduration);
+      Serial.print(0);
+      Serial.print(",");
+      Serial.print(0);
+      Serial.print(",");
+      Serial.print(0);
+      Serial.print("\n");
+      delay(10);
     }
-  
-
   }
 
   if (angle > 160)
@@ -140,4 +106,30 @@ void follow()
 
 
 }
+
+void read() {
+  pinMode(Rout, OUTPUT);
+  digitalWrite(Rout, LOW);
+  delayMicroseconds(2);
+  digitalWrite(Rout, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(Rout, LOW);
+
+  Rduration = pulseIn(Rin, HIGH);
+
+  pinMode(Lout, OUTPUT);
+  digitalWrite(Lout, LOW);
+  delayMicroseconds(2);
+  digitalWrite(Lout, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(Lout, LOW);
+
+  Lduration = pulseIn(Lin, HIGH);
+
+  // convert the time into a distance
+  Rinches = microsecondsToInches(Rduration);
+  Linches = microsecondsToInches(Lduration);
+
+}
+
 
